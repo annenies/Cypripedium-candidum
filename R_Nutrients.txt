@@ -1,0 +1,90 @@
+AND <- read.csv("AllNutrientData.csv")
+str(AND)
+pnm <- lm(Pmgg ~ 1, data = AND)
+psm <- lm(Pmgg ~ Site, data = AND)
+pdm <- lm(Pmgg ~ Distance, data = AND)
+anova(pnm,psm)
+anova(pnm,pdm)
+summary(pdm)
+nh4nm <- lm(NH4mgg ~ 1, data = AND)
+nh4sm <- lm(NH4mgg ~ Site, data = AND)
+nh4dm <- lm(NH4mgg ~ Distance, data = AND)
+anova(nh4nm,nh4dm)
+anova(nh4nm,nh4sm)
+summary(nh4sm)
+
+NO3nm <- lm(NO3mgg ~ 1, data = AND)
+NO3sm <- lm(NO3mgg ~ Site, data = AND)
+NO3dm <- lm(NO3mgg ~ Distance, data = AND)
+anova(NO3nm,NO3dm)
+anova(NO3nm,NO3sm)
+summary(NO3sm)
+
+nh4sdm <- lm(NH4mgg ~ Site + Distance, data = AND)
+
+NH4 <- read.csv("AllNutrientData2.4aNH4.csv")
+plot.design(NH4, main="Main effects")
+interaction.plot(NH4$Site, NH4$Distance, NH4$NH4mgg, col=c("red", "blue"))
+nh4tm2 <- aov(NH4mgg ~ Site*Distance, data = NH4)
+summary(nh4tm2)
+
+quartz()
+plot(tk1)
+quartz()
+plot(tk2)
+
+nh4m1 <- aov(NH4ugg ~ Site*Distance, data = AND)
+no3m1 <- aov(NO3ugg ~ Site*Distance, data = AND)
+pm1 <- aov(Pugg ~ Site*Distance, data = AND)
+nprm1 <- aov(NPRatio ~ Site*Distance, data = AND)
+
+summary(nh4m1)
+summary(no3m1)
+summary(pm1)
+summary(nprm1)
+
+summary(lm(NH4ugg ~ Site, data = AND))
+summary(lm(NO3ugg ~ Site, data = AND))
+summary(lm(NO3ugg ~ Site*Distance, data = AND))
+summary(lm(Pugg ~ Distance, data = AND))
+summary(lm(NPRatio ~ Site, data = AND))
+
+interaction.plot(AND$Site, AND$Distance, AND$NO3ugg)
+
+tk3 <- TukeyHSD(no3tm1,"Site")
+tk4 <- TukeyHSD(no3tm1,"Distance")
+
+quartz()
+plot(tk3)
+quartz()
+plot(tk4)
+
+interaction.plot(AND$Site, AND$Distance, AND$NO3mgg, col=c("red", "blue"))
+
+K <- read.csv("Kcypcan.csv")
+str(K)
+
+ktm1 <- aov(K ~ Site*Distance, data = K)
+summary(ktm1)
+interaction.plot(K$Site, K$Distance, K$K, col=c("red", "blue"))
+
+summary(lm(K ~ Site*Distance, data = K))
+summary(lm(NO3mgg ~ Site*Distance, data = AND))
+
+# so here's how it works. Use "aov" to build the 2-way anova, then if significant, use
+# a "lm" summary to get the mean and std error for each domain item.
+
+CN <- read.csv("CN1.csv")
+str(CN)
+
+cntm1 <- aov(CNRatio ~ Site*Distance, data = CN)
+summary(cntm1)
+
+summary(lm(CNRatio ~ Site*Distance, data = CN))
+
+nprtm1 <- aov(NPRatio ~ Site*Distance, data = AND)
+summary(nprtm1) # not significant
+
+NK <- read.csv("KN.csv")
+nktm1 <- aov(NKRatio ~ Site*Distance, data = NK) 
+summary(nktm1) # not significant
